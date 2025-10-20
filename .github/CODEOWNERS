@@ -1,0 +1,7 @@
+# Assign code ownership for critical files
+/docs/                  @documentation-team
+/src/                   @dev-team
+/config/                @security-team
+.github/workflows/      @automation-admins
+LICENSE                 @compliance-admin
+SECURITY.md             @security-team
