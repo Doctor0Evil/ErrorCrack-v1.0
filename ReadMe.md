@@ -1,3 +1,4 @@
+[![Contributor Ledger: Automated & Verified](https://github.com/Doctor0Evil/ErrorCrack-v1.0/actions/workflows/contributor-ledger-update.yml/badge.svg?branch=main)](https://github.com/Doctor0Evil/ErrorCrack-v1.0/actions/workflows/contributor-ledger-update.yml)
 [![Legal.AI System](https://img.shields.io/badge/Legal.AI-System-blue?style=flat)](https://github.com/Doctor0Evil/Legal-AI)
 [![SuperLegal.AI Charter](https://img.shields.io/badge/SuperLegal.AI-Charter-purple?style=flat)](https://github.com/Doctor0Evil/SuperLegal.AI)
 [![ALN Programming Language Verified](https://img.shields.io/badge/ALN--Programming--Language-Verified-brightgreen?style=flat)](https://github.com/Doctor0Evil/ALN-Programming-Language.git)
