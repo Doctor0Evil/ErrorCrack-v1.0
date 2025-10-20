@@ -1,0 +1,29 @@
+{
+  "ledger_version": "1.0",
+  "project": "ErrorCrack-v1.0",
+  "maintainer": {
+    "name": "Jacob Scott Farmer",
+    "github": "Doctor0Evil",
+    "org": "Perplexity Labs Inc.",
+    "role": "Lead Maintainer",
+    "consent_timestamp": "2025-10-20T07:56:00Z"
+  },
+  "contributors": [
+    {
+      "name": "Jane Example",
+      "github": "superdev42",
+      "role": "Core Developer",
+      "contributions": ["code", "docs", "artifact"],
+      "consent_timestamp": "2025-02-17T15:22:41Z"
+    },
+    {
+      "name": "AI Bot (autogen)",
+      "github": "perplexity-bot",
+      "role": "Automated Error Collector",
+      "contributions": ["error log submission", "analysis"],
+      "consent_timestamp": "2025-09-01T11:54:12Z"
+    }
+  ],
+  "consent_policy": "All listed contributors affirm, at commit time, that their submissions are original and they consent to project license, code of conduct, and governance terms.",
+  "last_updated": "2025-10-20T07:56:00Z"
+}
