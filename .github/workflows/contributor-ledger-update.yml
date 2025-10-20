@@ -1,0 +1,85 @@
+name: Contributor Ledger Automated Update
+
+on:
+  pull_request:
+    types: [opened, synchronize, closed]
+  push:
+    branches:
+      - main
+
+jobs:
+  update_contributorsledger:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true || github.event_name == 'push'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python environment
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install python dependencies
+        run: pip install pytz
+
+      - name: Get PR or Push Metadata
+        id: meta
+        run: |
+          echo "ACTOR=${{ github.actor }}" >> $GITHUB_ENV
+          echo "EVENT_NAME=${{ github.event_name }}" >> $GITHUB_ENV
+          echo "PR_NUMBER=${{ github.event.pull_request.number || github.event.number || 'NA' }}" >> $GITHUB_ENV
+          echo "COMMIT_SHA=${{ github.sha }}" >> $GITHUB_ENV
+          echo "EVENT_TIME=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_ENV
+
+      - name: Parse and Update contributorsledger.json
+        run: |
+          import json
+          import os
+          import pytz
+          from datetime import datetime
+
+          ledger_path = "contributorsledger.json"
+          actor = os.environ["ACTOR"]
+          now = datetime.utcnow().replace(tzinfo=pytz.UTC).isoformat(timespec='seconds')
+          if os.path.exists(ledger_path):
+              with open(ledger_path, "r", encoding="utf-8") as f:
+                  ledger = json.load(f)
+          else:
+              ledger = {
+                  "ledger_version": "1.0",
+                  "project": "ErrorCrack-v1.0",
+                  "contributors": [],
+                  "consent_policy": "All listed contributors affirm, at commit time, that their submissions are original and they consent to project license, code of conduct, and governance terms.",
+                  "last_updated": now
+              }
+
+          # Exclude bots and dependabot
+          if actor not in ["dependabot[bot]", "github-actions[bot]"]:
+              found = False
+              for c in ledger.get("contributors", []):
+                  if c.get("github") == actor:
+                      c["consent_timestamp"] = now
+                      found = True
+              if not found:
+                  ledger["contributors"].append({
+                      "name": actor,
+                      "github": actor,
+                      "role": "Contributor",
+                      "contributions": [],
+                      "consent_timestamp": now
+                  })
+              ledger["last_updated"] = now
+              with open(ledger_path, "w", encoding="utf-8") as f:
+                  json.dump(ledger, f, indent=2)
+
+      - name: Commit updated ledger
+        uses: EndBug/add-and-commit@v9
+        with:
+          add: 'contributorsledger.json'
+          author_name: 'contributor-bot'
+          author_email: 'bot@users.noreply.github.com'
+          message: 'Automated: update contributors ledger for ${{ github.actor }} (${{ github.sha }})'
+          push: true
